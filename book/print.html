@@ -1,0 +1,453 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Redox Operating-System</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="This books carefully describes the design, implementation, direction, and structure of Redox, the operating-system.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body>
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./overview/welcome.html"><strong>1.</strong> Overview</a></li><li><ul class="section"><li><a href="./overview/what_redox_is.html"><strong>1.1.</strong> What Redox is</a></li><li><a href="./overview/the_structure.html"><strong>1.2.</strong> The structure</a></li><li><a href="./overview/side_projects.html"><strong>1.3.</strong> Side projects</a></li><li><a href="./overview/developers.html"><strong>1.4.</strong> Developers</a></li></ul></li><li><strong>2.</strong> Introduction</li><li><ul class="section"><li><a href="./introduction/what_is_redox.html"><strong>2.1.</strong> What is Redox?</a></li><li><a href="./introduction/why_redox.html"><strong>2.2.</strong> Why Redox?</a></li><li><a href="./introduction/why_rust.html"><strong>2.3.</strong> Why Rust?</a></li><li><ul class="section"><li><strong>2.3.1.</strong> Heartbleed: A case study</li><li><a href="./introduction/unsafes.html"><strong>2.3.2.</strong> Unsafes</a></li></ul></li><li><a href="./introduction/why_mit.html"><strong>2.4.</strong> Why MIT?</a></li><li><a href="./introduction/how_redox_compares_to_other_operating_systems.html"><strong>2.5.</strong> How Redox compares to other operating systems</a></li><li><a href="./introduction/will_redox_replace_linux.html"><strong>2.6.</strong> Will Redox replace Linux?</a></li></ul></li><li><strong>3.</strong> Getting started</li><li><ul class="section"><li><a href="./getting_started/preparing_the_build.html"><strong>3.1.</strong> Preparing Redox</a></li><li><a href="./getting_started/compiling_redox.html"><strong>3.2.</strong> Compiling Redox</a></li><li><a href="./getting_started/exploring_redox.html"><strong>3.3.</strong> Exploring Redox</a></li><li><a href="./getting_started/asking_questions_giving_feedback.html"><strong>3.4.</strong> Questions and feedback</a></li></ul></li><li><a href="./design/design.html"><strong>4.</strong> The design</a></li><li><ul class="section"><li><a href="./design/urls_schemes_resources.html"><strong>4.1.</strong> URLs, schemes and resources</a></li><li><ul class="section"><li><a href="./design/url/urls.html"><strong>4.1.1.</strong> URLs</a></li><li><ul class="section"><li><strong>4.1.1.1.</strong> Aren't they weakly typed?</li><li><strong>4.1.1.2.</strong> Aren't they confusing?</li><li><a href="./design/url/how_it_works.html"><strong>4.1.1.3.</strong> How it works under the hood </a></li></ul></li><li><a href="./design/scheme/schemes.html"><strong>4.1.2.</strong> Schemes</a></li><li><ul class="section"><li><a href="./design/scheme/writing_a_scheme.html"><strong>4.1.2.1.</strong> Writing your own scheme</a></li><li><strong>4.1.2.2.</strong> Using schemes efficiently</li></ul></li><li><a href="./design/resource/resources.html"><strong>4.1.3.</strong> Resources</a></li><li><ul class="section"><li><a href="./design/resource/socket_like.html"><strong>4.1.3.1.</strong> Socket-like</a></li><li><a href="./design/resource/file_like..html"><strong>4.1.3.2.</strong> File-like</a></li></ul></li><li><strong>4.1.4.</strong> Stitching it all together</li><li><ul class="section"><li><strong>4.1.4.1.</strong> &quot;Everything is an URL&quot;</li><li><ul class="section"><li><strong>4.1.4.1.1.</strong> vs &quot;Everything is a file&quot;</li></ul></li><li><strong>4.1.4.2.</strong> An example</li></ul></li></ul></li><li><strong>4.2.</strong> The kernel</li><li><ul class="section"><li><strong>4.2.1.</strong> Microkernels</li><li><ul class="section"><li><strong>4.2.1.1.</strong> Advantages of microkernels</li><li><strong>4.2.1.2.</strong> Disadvantages of microkernels</li><li><strong>4.2.1.3.</strong> Performance of microkernels</li></ul></li><li><strong>4.2.2.</strong> Syscalls</li><li><ul class="section"><li><strong>4.2.2.1.</strong> Linux compatibility</li></ul></li><li><strong>4.2.3.</strong> Scheduling</li><li><strong>4.2.4.</strong> Memory management</li><li><strong>4.2.5.</strong> Drivers</li></ul></li><li><strong>4.3.</strong> Trade-offs</li><li><ul class="section"><li><strong>4.3.1.</strong> Safety and performance</li><li><strong>4.3.2.</strong> Simplicity and expressiveness</li></ul></li><li><strong>4.4.</strong> Coreutils</li><li><ul class="section"><li><strong>4.4.1.</strong> Fail, fail, and fail</li><li><strong>4.4.2.</strong> Simplicty and minimalism</li><li><strong>4.4.3.</strong> Supplement utilities</li><li><ul class="section"><li><strong>4.4.3.1.</strong> Binutils</li><li><strong>4.4.3.2.</strong> Extrautils</li></ul></li></ul></li><li><strong>4.5.</strong> ZFS</li><li><ul class="section"><li><strong>4.5.1.</strong> What ZFS is</li><li><strong>4.5.2.</strong> The Uberblock</li><li><strong>4.5.3.</strong> RAID</li><li><strong>4.5.4.</strong> The VDev tree</li></ul></li><li><strong>4.6.</strong> Orbital</li><li><ul class="section"><li><strong>4.6.1.</strong> What Orbital is</li><li><strong>4.6.2.</strong> Orbclient</li><li><strong>4.6.3.</strong> Opening a window</li><li><strong>4.6.4.</strong> Extras</li><li><ul class="section"><li><strong>4.6.4.1.</strong> OrbTK</li><li><strong>4.6.4.2.</strong> Orbutils</li></ul></li></ul></li><li><strong>4.7.</strong> Ion</li><li><ul class="section"><li><strong>4.7.1.</strong> What Ion is</li><li><strong>4.7.2.</strong> The design of Ion</li><li><strong>4.7.3.</strong> The syntax</li><li><strong>4.7.4.</strong> How it differs from Bash</li></ul></li><li><strong>4.8.</strong> Oxide</li><li><ul class="section"><li><strong>4.8.1.</strong> Decentral</li><li><strong>4.8.2.</strong> Cryptography</li><li><strong>4.8.3.</strong> The indexes</li><li><strong>4.8.4.</strong> The repositories</li><li><strong>4.8.5.</strong> The trusted parties</li></ul></li><li><strong>4.9.</strong> Sodium</li><li><ul class="section"><li><strong>4.9.1.</strong> What it is</li><li><strong>4.9.2.</strong> Understanding the design</li><li><strong>4.9.3.</strong> Using Sodium efficiently</li></ul></li></ul></li><li><strong>5.</strong> Development in userspace</li><li><ul class="section"><li><strong>5.1.</strong> What userspace is</li><li><strong>5.2.</strong> Writing an application for Redox</li><li><ul class="section"><li><strong>5.2.1.</strong> Platform independence</li><li><ul class="section"><li><strong>5.2.1.1.</strong> What is available and what is not</li></ul></li><li><strong>5.2.2.</strong> Using schemes</li><li><strong>5.2.3.</strong> Using Orbital</li><li><strong>5.2.4.</strong> Compiling your program</li><li><strong>5.2.5.</strong> An full example</li></ul></li><li><strong>5.3.</strong> Porting a program</li><li><ul class="section"><li><strong>5.3.1.</strong> Remove dependencies</li><li><strong>5.3.2.</strong> Cross-compiling</li></ul></li></ul></li><li><strong>6.</strong> Contributing</li><li><ul class="section"><li><strong>6.1.</strong> Communication</li><li><ul class="section"><li><strong>6.1.1.</strong> Chat</li></ul></li><li><strong>6.2.</strong> Direct contributions</li><li><ul class="section"><li><strong>6.2.1.</strong> Low hanging fruit</li><li><strong>6.2.2.</strong> Github issues</li><li><ul class="section"><li><strong>6.2.2.1.</strong> How to do a bug report correctly</li></ul></li><li><strong>6.2.3.</strong> Pull requests</li><li><ul class="section"><li><strong>6.2.3.1.</strong> How to do a pull request properly</li></ul></li></ul></li><li><strong>6.3.</strong> Indirect contributions</li><li><ul class="section"><li><strong>6.3.1.</strong> Community</li><li><strong>6.3.2.</strong> Porting your programs to Redox</li></ul></li><li><strong>6.4.</strong> Best practices and guidelines</li><li><ul class="section"><li><strong>6.4.1.</strong> Documentation</li><li><ul class="section"><li><strong>6.4.1.1.</strong> Literal programming</li><li><strong>6.4.1.2.</strong> Writing docs correcty (TM)</li><li><strong>6.4.1.3.</strong> Marking code</li><li><ul class="section"><li><strong>6.4.1.3.1.</strong> XXX</li><li><strong>6.4.1.3.2.</strong> TODO</li><li><strong>6.4.1.3.3.</strong> FIXME</li></ul></li></ul></li><li><strong>6.4.2.</strong> Style</li><li><strong>6.4.3.</strong> Rusting properly</li><li><ul class="section"><li><strong>6.4.3.1.</strong> Writing fast Rust</li><li><strong>6.4.3.2.</strong> Avoiding heap allocations</li><li><strong>6.4.3.3.</strong> Exiting a program</li><li><strong>6.4.3.4.</strong> Avoiding panics in the kernel</li></ul></li><li><strong>6.4.4.</strong> Tests</li><li><ul class="section"><li><strong>6.4.4.1.</strong> Tests in the kernel</li></ul></li><li><strong>6.4.5.</strong> Logging and assertions</li><li><strong>6.4.6.</strong> Git</li></ul></li></ul></li><li><strong>7.</strong> Understanding the codebase</li><li><ul class="section"><li><strong>7.1.</strong> Kernel</li><li><ul class="section"><li><strong>7.1.1.</strong> Environment</li></ul></li></ul></li><li><strong>8.</strong> Fun</li><li><ul class="section"><li><strong>8.1.</strong> Running Redox on real hardware</li><li><strong>8.2.</strong> Setting up a Redox desktop</li><li><strong>8.3.</strong> Customizing Redox</li></ul></li><li><strong>9.</strong> The future</li><li><ul class="section"><li><strong>9.1.</strong> What is done and what is not</li><li><strong>9.2.</strong> Goals</li><li><strong>9.3.</strong> Redox's target</li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title">The Redox Operating-System</h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <h1>Welcome!</h1>
+<p>This is the Redox book, which will go through (almost) everything about Redox: design, philosophy, how it works, how you can contribute, how to deploy Redox, and much more.</p>
+<p>This book is written by Ticki.</p>
+<h1>What Redox is</h1>
+<p>Redox is an general purpose operating system and surrounding ecosystem written in pure Rust. Our aim is to provide a fully functioning Linux replacement, without the bad parts.</p>
+<p>We have a modest compatibility with Linux syscalls, making Redox able to run many Linux program without any form of virtualization.</p>
+<p>We take inspiration from Plan9, Minix, and BSD. We are trying to generalize various concepts from other systems, to get one unified design. We will speak about this some more in the <code>Design</code> chapter.</p>
+<p>Redox runs on real hardware today.</p>
+<blockquote>
+<p>TODO: Make this better.</p>
+</blockquote>
+<h1>The structure</h1>
+<p>The book is broken into 8 parts:</p>
+<ul>
+<li>Overview: A quick'n'dirty overview of Redox.</li>
+<li>Introduction: Explanation of what Redox is and how it compares to other systems.</li>
+<li>Getting started: Compiling and running Redox.</li>
+<li>The design: An in-depth introduction to the design and implementation of Redox.</li>
+<li>Development in userspace: Writing applications for Redox.</li>
+<li>Contributing: How you can contribute to Redox.</li>
+<li>Fun: Top secret chapter.</li>
+<li>The future: What Redox aims to be.</li>
+</ul>
+<p>It is written such that you do not need any prior knowledge in Rust and/or OS development.</p>
+<h1>Side projects</h1>
+<p>You might have noticed that Redox is more than a kernel. Redox is a complete Rust operating system.</p>
+<p>We got a number of Rust side project, which are developed for Redox, to make up a complete function OS:</p>
+<ul>
+<li>Orbital: The display server of Redox.</li>
+<li>OrbTK: An widget toolkit.</li>
+<li>Ion: The Redox shell.</li>
+<li>Sodium: A Vi-like editor.</li>
+<li>An implementation of ZFS.</li>
+<li>Oxide: Redox's package manager.</li>
+</ul>
+<p>It is worth noting that all of the side-projects are pure, custom-written Rust.</p>
+<p>We also have three different utility distribution, which are collections of small, useful command-line programs:</p>
+<ul>
+<li>Coreutils: A minimal set of utilities, which are essential for an usable system.</li>
+<li>Extrautils: Some extra utilities (like reminders, calendars, spellcheck, and so on).</li>
+<li>Binutils: Utilities for working with binary files.</li>
+</ul>
+<p>Why not just use some already written programs? Because, we want a <strong>Rust</strong> operating system. Later, we will expand on why using Rust is important to us, and why you should care!</p>
+<h1>Developers</h1>
+<p>We are quite a few developers at Redox. 40+ people working on it. All sorts of cool people to work with.</p>
+<p>Our BDFL is Jeremy Soller (Jackpot51), who maintains the kernel, Orbital (and OrbTK), and the overall direction of the project.</p>
+<p>The other side projects have different BDFLs:</p>
+<ul>
+<li>Ion: Skyler Berg.</li>
+<li>Sodium: Ticki.</li>
+<li>The implementation of ZFS: Formerly Tedsta, now Ticki.</li>
+<li>Oxide: Ticki</li>
+<li>Coreutils: Ticki.</li>
+<li>Extrautils: Ticki.</li>
+<li>Binutils: Ticki.</li>
+</ul>
+<p>The &quot;core team&quot; (people who are regularly contributing to Redox) is currently:</p>
+<p>(alphabetically sorted)</p>
+<ul>
+<li>hauleth</li>
+<li>henrikhodne</li>
+<li>jackpot51</li>
+<li>k0pernicus</li>
+<li>mgattozzi</li>
+<li>roxxik</li>
+<li>skylerberg</li>
+<li>stratact</li>
+<li>tedsta</li>
+<li>ticki</li>
+</ul>
+<p>But <a href="https://github.com/redox-os/redox/graphs/contributors">don't</a> <a href="https://github.com/redox-os/coreutils/graphs/contributors">forget</a> <a href="https://github.com/redox-os/sodium/graphs/contributors">all</a> <a href="https://github.com/redox-os/ion/graphs/contributors">the</a> <a href="https://github.com/redox-os/orbtk/graphs/contributors">other</a> <a href="https://github.com/redox-os/orbclient/graphs/contributors">awesome</a> <a href="https://github.com/redox-os/redox/graphs/contributors">contributors</a>.</p>
+<h1>What is Redox?</h1>
+<p>You might still have the question: What is Redox actually?</p>
+<p>Redox is an attempt to make an complete, fully-functioning, general-purpose operating system with focus on safety, correctness, and pragmatism. Redox isn't afraid of dropping the bad parts of POSIX, while preserving a modest Linux API consistency.</p>
+<p>Because of certain design choices, we cannot gain a complete 1:1 POSIX compatibility. I will expand on this later.</p>
+<p>Most importantly, <strong>we will not replicate the mistakes made by other.</strong> This is probably the most important idiom of Redox. In the past, bad design choices were made by Linux, Unix, BSD, HURD, and so on. We all make mistakes, that's no secret, but there is no reason to repeat other's mistakes.</p>
+<p>It should be obvious to the reader that this entails a trade-off, namely compatibility v. correctness. As you can see, breaking certain standards do break compatibility. We take a very pragmatic approach to these:</p>
+<p>We do not reinvent things, just to reinvent them. Don't fix things that are already fixed, fix things which are broken.</p>
+<p>To the extend of correctness, we keep Linux compatibility.</p>
+<h2>How can we be sure not to make mistakes?</h2>
+<p>Hah! We cannot.</p>
+<p>We can do certain things to prevent it, however:</p>
+<p>Linux have been way too fast to stabilize things, and way to slow to deprecate them. This meant that old, legacy drivers are a mandatory part of the Linux kernel. We want a slow release model to avoid doing bad design decisions. We will not stabilize before they are well-tested and known to work.</p>
+<p>We will not sacrifice correctness for compatibility. We are not afraid of looking at the mistakes that were made during the development of other operating systems, and then learn by them.</p>
+<h2>The goals of Redox</h2>
+<p>We want to be able to use it, without obstructions, as a replacement for Linux on our computers. It should be able to run pretty much all Linux executable with only minimal modifications.</p>
+<p>We're aiming towards a complete, safe pure Rust ecosystem. This is a design choice, which hopefully improves correctness and security (see <code>Why Rust?</code>).</p>
+<h2>The non-goals of Redox</h2>
+<p>We are not an Unix clone. We are neither a crazy scientist, who wants to redesign everything. Generally, we stick to the well-tested and proven correctly designs. If it ain't broken don't fix it.</p>
+<h1>Why Redox?</h1>
+<p>A natural question this raises is: why do we need yet another OS? There are plenty out there already.</p>
+<p>The answer is: you don't. No-one <em>needs</em> an OS.</p>
+<h2>Why not contribute somewhere else? Linux? Plan 9? A BSD? Maybe even HURD? Or even go proprietary?</h2>
+<p>There are numerous other OS's, kernels, whatever that lack for contributors, and are in desperate need of more coders. Many times, this is for a good reason. Failures in management, a lack of money, inspiration, or innovation, or a limited set of applications have all caused projects to dwindle and eventually fail.</p>
+<p>All these have numerous short-fallings, vulnerability, and bad design choices. Redox isn't and won't be perfect, but we seek to improve over other OSes.</p>
+<p>Take Linux for example:</p>
+<ul>
+<li>Legacy until infinity: Old syscalls stay around forever, drivers for long-unbuyable hardware stay as in the kernel as a mandatory part. While they can be disabled, running them in kernel space is essentially unnecessary, and is one of the biggest sources of system crashes, security issues, and unexpected bugs.</li>
+<li>Huge codebase: To contribute, you must find a place to fit in to nearly <em>25 million lines of code</em>, in just the kernel. This is due to Linux's monolithic architecture.</li>
+<li>Restrictive license: Linux is licensed under GPL2. More on this in <code>Why MIT?</code>.</li>
+<li>Lack of memory safety: Linux have had numerous issues with memory safety throughout time. C is a fine language, but for such a security critical system, C isn't fit.</li>
+</ul>
+<p>Compared to BSD, Linux is completely frontal-lope-missing, in every imaginable way. The code base is one big, ugly hack, and the design is bad in so many ways. We don't want such a project!</p>
+<p>It is no secret that we're more in favor of BSD, than Linux (although most of us are still Linux users, for various reasons). But BSD isn't quite there yet: most importantly, <strong>it has a monolithic kernel, written in C</strong>.</p>
+<blockquote>
+<p>TODO: Rewrite this</p>
+</blockquote>
+<h1>Why Rust?</h1>
+<p>Why write an operating system in Rust? Why even write in Rust?</p>
+<p>Rust has enormous advantages, because for operating systems <em>safety matters</em>. A lot, actually.</p>
+<p>Since operating systems are such an integrated part of computing, it is a very security critical component.</p>
+<p>There have been numerous bugs and vulnerability in Linux, BSD, Glibc, Bash, X, etc. throughout the time, simply due to the lack of memory and type safety. Rust does this right, by enforcing safety statically.</p>
+<p>Design do matter, but so does implementation. Avoiding these unexpected memory unsafe conditions (which are, by far, the biggest source of security critical bugs, since they're, by nature, unexpected). Design is a very transparent source of issues. You know what is going on, you know what was intended and what was not.</p>
+<p>The basic design of the kernel/userspace separation is fairly similar to genuine *nix systems, at this point. The idea is roughly the same: you seperate kernel and userspace, through strict enforcement by the kernel, which is managing memory and other critical resources.</p>
+<p>However, we got an advantage: by having enforced memory and type safety. This is Rust's strong side, the vast majority of &quot;unexpected bugs&quot; (for example, undefined behavior) are eliminated.</p>
+<p>The design of Linux or BSD is secure. The implementation is not:</p>
+<ul>
+<li>
+<p><a href="https://www.cvedetails.com/vulnerability-list.php?vendor_id=33&amp;product_id=47&amp;version_id=&amp;page=1&amp;hasexp=0&amp;opdos=0&amp;opec=0&amp;opov=0&amp;opcsrf=0&amp;opgpriv=0&amp;opsqli=0&amp;opxss=0&amp;opdirt=0&amp;opmemc=0&amp;ophttprs=0&amp;opbyp=0&amp;opfileinc=0&amp;opginf=0&amp;cvssscoremin=7&amp;cvssscoremax=7.99&amp;year=0&amp;month=0&amp;cweid=0&amp;order=3&amp;trc=269&amp;sha=27cc1be095dd1cc4189b3d337cc787289500c13e">Linux kernel vulnerabilities</a></p>
+</li>
+<li>
+<p><a href="https://www.cvedetails.com/vulnerability-list.php?vendor_id=72&amp;product_id=767&amp;version_id=&amp;page=1&amp;hasexp=0&amp;opdos=0&amp;opec=0&amp;opov=0&amp;opcsrf=0&amp;opgpriv=0&amp;opsqli=0&amp;opxss=0&amp;opdirt=0&amp;opmemc=0&amp;ophttprs=0&amp;opbyp=0&amp;opfileinc=0&amp;opginf=0&amp;cvssscoremin=0&amp;cvssscoremax=0&amp;year=0&amp;month=0&amp;cweid=0&amp;order=3&amp;trc=62&amp;sha=5e0c40399ffafd65f77e6b537bcc0f50474eeed3">Glibc vulnerabilities</a></p>
+</li>
+<li>
+<p><a href="http://www.cvedetails.com/vulnerability-list.php?vendor_id=72&amp;product_id=21050&amp;version_id=&amp;page=1&amp;hasexp=0&amp;opdos=0&amp;opec=0&amp;opov=0&amp;opcsrf=0&amp;opgpriv=0&amp;opsqli=0&amp;opxss=0&amp;opdirt=0&amp;opmemc=0&amp;ophttprs=0&amp;opbyp=0&amp;opfileinc=0&amp;opginf=0&amp;cvssscoremin=0&amp;cvssscoremax=0&amp;year=0&amp;month=0&amp;cweid=0&amp;order=3&amp;trc=10&amp;sha=b7da5775428a703fdead6c27fbca76cd40b7c596">Bash vulnerabilities</a></p>
+</li>
+<li>
+<p><a href="https://www.cvedetails.com/vulnerability-list.php?vendor_id=8216&amp;product_id=&amp;version_id=&amp;page=1&amp;hasexp=0&amp;opdos=0&amp;opec=0&amp;opov=0&amp;opcsrf=0&amp;opgpriv=0&amp;opsqli=0&amp;opxss=0&amp;opdirt=0&amp;opmemc=0&amp;ophttprs=0&amp;opbyp=0&amp;opfileinc=0&amp;opginf=0&amp;cvssscoremin=0&amp;cvssscoremax=0&amp;year=0&amp;month=0&amp;cweid=0&amp;order=3&amp;trc=55&amp;sha=a68a1ced1b67444749733b7fa9e1438ff0c42810">X vulnerabilities</a></p>
+</li>
+</ul>
+<p>Click on the above links. You'll probably notice that the vast majority is just basic bugs originating in unsafe conditions (which Rust effectively eliminates), not design.</p>
+<p>We hope that using Rust will produce a more secure operating system in the end.</p>
+<!-- TODO Rust doesn't make your code designed correct; that's impossible. However, it is possible to formally prove a design to be sound (like sel4 did), and this is something we're working on. -->
+<h1>Unsafes</h1>
+<p><code>unsafe</code> is a way to tell Rust that &quot;I know what I'm doing!&quot;, which is necessary when writing extremely low-level code. You cannot write a kernel without <code>unsafe</code>s.</p>
+<p>In that light, a kernel cannot be 100% safe, however the unsafe parts have to be marked with an <code>unsafe</code>, which makes the unsafe parts segregated from the safe code. We seek to eliminate the <code>unsafe</code>s where we can, and when we use <code>unsafe</code>s, we are extremely careful.</p>
+<p>A quick grep gives us some stats: The kernel has 16.52% unsafe code, a 50% improvement in the last three weeks. Userspace has roughly ~0.2%.</p>
+<p>In contrary to Linux, which has a code base with 100% unsafe code, due to the nature of C.</p>
+<blockquote>
+<p>TODO: Expand</p>
+</blockquote>
+<h1>Why MIT?</h1>
+<p>This is a rather controversial, frequently asked question.</p>
+<p>GPL is good for is forcing people who make changes to the source to contribute back. This would be okay if you developing a program, but never ideal for libraries or operating systems, because GPL forces any code that even remotely uses or links to the GPL source, to become GPL'd.</p>
+<p>Since operating systems are such an integrated part of our lives, we want as little restriction as possible. Restrictive licenses are quite a big disadvantage for OS projects. MIT opens up a lot of possibilities, which are simply not plausible with, say, GPL.</p>
+<p>GPL is upstream-centric, MIT is downstream-centric. We happen to prioritize downstream more than upstream, since downstream is what really matters: the userbase, the community, the availability.</p>
+<p>We wanted to encourage the use, modification, and packaging of Redox in absolutely all realms. Open source should be open, for everyone. There's absolutely no reason for limiting the usage of the software. Therefore, MIT was the license of choice.</p>
+<h2>But what if someone &quot;steals&quot; the source code?</h2>
+<p>We wouldn't mind if somebody did that. For successfully steal a project, you'd have to do <em>some</em> improvements over the upstream version. You can't sell an apple for $2, if another person stands right next to you, giving them away for free. For this reason, making a (potentially proprietary) fork interesting requires to put some time and money into it.</p>
+<p>There is nothing wrong with building on the top of Redox. You can't <em>unfairly</em> steal a project. That's simply not possible. For a fork to gain interest, you will no matter what have to put effort into it.</p>
+<p>Building on the top of Redox, whether it gets to upstream or not, is a thing we appreciate.</p>
+<p>We like to have a decentralized structure of the project, allowing people to do whatever they want, no matter how they intend to share it.</p>
+<h1>How Redox compares to other operating systems</h1>
+<p>We share quite a lot with quite a lot other operating systems.</p>
+<h2>Syscalls</h2>
+<p>The syscall interface is very Unix-y. For example, we have <code>open</code>, <code>pipe</code>, <code>pipe2</code>, <code>lseek</code>, <code>read</code>, <code>write</code>, <code>brk</code>, <code>execv</code>, and so on. Currently, we support the 31 most common Linux syscalls.</p>
+<p>Compared to Linux, our syscall interface is much more minimal. This is not because of the stage in development. This is a matter of design. Linux has a lot unnecessary, bloated syscalls (try to run <code>man syscalls</code>, and an almost infinite list appears).</p>
+<h2>&quot;Everything is an URL&quot;</h2>
+<p>This is an generalization of &quot;Everything is an file&quot;, largely inspired by Plan 9. In Redox, &quot;resources&quot; (will be explained later) can be both socket-like and file-like, making them fast enough for using them for virtually everything.</p>
+<p>This way we get a more unified system API.</p>
+<h2>The kernel</h2>
+<p>Redox's kernel is a microkernel. The architecture is largely inspired by L4 and Minix.</p>
+<p>In contrast to Linux or BSD, Redox is a microkernel, giving it numerous advantages (I'll explain these later on).</p>
+<h1>What Redox replace Linux?</h1>
+<p>No.</p>
+<h1>Preparing the build.</h1>
+<p>Woah! You made it so far, all the way to here. Congrats! Now we gotta build Redox.</p>
+<p><em>If you're lazy, and on an Linux computer. Well, you're today's winner! Just run the bootstrapping script, which does the build preparation for you:</em></p>
+<pre><code>$ curl -sf https://raw.githubusercontent.com/redox-os/redox/master/bootstrap.sh -o bootstrap.sh &amp;&amp; bash -e bootstrap.sh
+</code></pre>
+<p>Oh, you're not lazy? Well, then the next section is for you!</p>
+<h2>Installing the build dependencies manually</h2>
+<p>I assume you have a package manager, which you know how to use (if not, you have to install the build dependencies manually). We need the following deps: <code>make</code> (probably already installed), <code>nasm</code> (the assembler, we use in the build process), <code>qemu</code> (the hardware emulator, we will use. If you want to run Redox on real hardware, you should read the <code>fun</code> chapter):)</p>
+<pre><code>$ [you package manager] install make nasm qemu
+</code></pre>
+<p>While the following step is not <em>required</em>, it is recommended. If you already got a functioning Rust nightly installation, you can skip this step:</p>
+<p>We will use <code>multirust</code> to manage our Rust versions:</p>
+<pre><code>$ curl -sf https://raw.githubusercontent.com/brson/multirust/master/quick-install.sh | sh
+</code></pre>
+<p>Now, we have to configurate our multirust installation to default to <code>nightly</code>:</p>
+<pre><code>$ multirust override nightly
+</code></pre>
+<h1>Compiling Redox</h1>
+<p>Now we have prepared the build, so naturally we're going to build Redox.</p>
+<h2>Cloning the repository</h2>
+<pre><code>$ git submodule update --init
+</code></pre>
+<p>Give it a while. Redox is big.</p>
+<h2>Yay! Building!</h2>
+<pre><code>$ cd /path/to/redox
+$ make -j 4 build
+</code></pre>
+<p>This is going to take a while. So sit down and relax.</p>
+<p>When this is done, the exciting part is starting:</p>
+<h2>Running Redox</h2>
+<p>To run Redox, do:</p>
+<pre><code>$ make qemu
+</code></pre>
+<p>This should open up a Qemu window, booting to Redox.</p>
+<p>If it does not work, try:</p>
+<pre><code>$ make qemu kvm=no # we disable KVM
+</code></pre>
+<p>If this doesn't work either, you should go open an issue.</p>
+<h2>Note</h2>
+<p>If you encounter any bugs, errors, obstructions, or other annoying things, please report the issue to the Redox repository. Thanks!</p>
+<h1>Exploring Redox</h1>
+<h2>Sodium</h2>
+<p>Sodium is Redox's Vi-like editor. In the menu-bar, pick the icon with <code>Na</code> on it. This should now open up an editor window.</p>
+<p>A short list of the Sodium defaults:</p>
+<ul>
+<li><code>hjkl</code>: Navigation.</li>
+<li><code>ia</code>: Go to insert mode.</li>
+<li><code>;</code>: Go to command-line mode.</li>
+<li>shift-space: Go to normal mode.</li>
+</ul>
+<p>For a more extensive list, write <code>;help</code>.</p>
+<h2>Setting a reminder/countdown</h2>
+<p>To demonstrate the ANSI support, we will play around with fancy reminders.</p>
+<p>Open up the terminal emulator. Now, write <code>rem -s 10 -b</code>. This will set a 10 sec. countdown with progress bar.</p>
+<h2>Playing around with Rusthello</h2>
+<p>Rusthello is an advanced Reversi AI, made by <a href="https://github.com/EGhiorzi">Enrico</a>. It is highly concurrent, so this proves Redox's multithreading capabilities. It supports various AIs, such as brute forcing, minimax, local optimizations, and hybrid AIs.</p>
+<p>Oh, let's try it out!</p>
+<pre><code># first we `cd` to the Rusthello directory
+$ cd apps/rusthello
+# now, run the binary file
+$ ./main.bin
+</code></pre>
+<p>The you get prompted various things, such as difficulty, AI setup, and so on. When this is done, Rusthello interactively starts the battle between you and an AI or an AI and an AI.</p>
+<h2>Exploring OrbTK</h2>
+<p>Click the OrbTK demo app in the menu bar. Now, this will open up a graphical user interface, demonstrating the different widgets, OrbTK currently supports.</p>
+<h1>Asking question, giving feedback or anything goes contact</h1>
+<p>If you got questions, feedback or anything else for us, you should join #redox at the Mozilla IRC network (<code>irc.mozilla.org</code>). Originally, we used FreeNode, but switched to Mozilla IRC, due to the Rust channel also being there.</p>
+<h1>The design of Redox</h1>
+<p>This chapter will go over the design of Redox: the kernel, the userspace, the ecosystem, the trade-offs and much more.</p>
+<h1>URLs, schemes, and resources</h1>
+<p>This one of the most important design choices Redox makes. These three essential concepts are very entangled.</p>
+<h2>What does &quot;Everything is an URL&quot; mean?</h2>
+<p>&quot;Everything is an URL&quot; is a generalization of &quot;Everything is a file&quot;, allowing broader use of this unified interface for schemes.</p>
+<p>These can be used for effectively modulating the system in a &quot;non-patchworky&quot; manner.</p>
+<p>The term is rather misleading, since URL is just the identifier of a scheme and a resource descriptor. So in that sense &quot;Everything is a scheme, identified by an URL&quot; is more accurate, but not very catchy.</p>
+<h2>So, how does it differ from files?</h2>
+<p>You can think of URLs and segregated virtual file systems, which can be arbitrarily structured (they do not have to be tree-like) and arbitrarily defined by a program. Furthermore, &quot;files&quot; don't have to behave file-like! More on this later.</p>
+<p>It opens up a lot of possibilities.</p>
+<blockquote>
+<p>[... TODO]</p>
+</blockquote>
+<p>The idea of virtual file systems is not a new one. If you are on a Linux computer, you should try to <code>cd</code> to <code>/proc</code>, and see what's going on there.</p>
+<p>Redox extends this concept to a much more powerful one.</p>
+<blockquote>
+<p>TODO</p>
+</blockquote>
+<h1>URLs</h1>
+<p>The URL <em>it self</em> is a relatively uninteresting, yet very a important notion for the design of Redox. What is the interesting part is what it represents.</p>
+<h2>The URL</h2>
+<p>In short, an URL is an identifier of a scheme. They contain two parts:</p>
+<ol>
+<li>
+<p>The scheme part. This part represents, the &quot;receiver&quot;, i.e. what scheme will handle the (F)OPEN call. This can be any arbitrary UTF-8 string, and will often simply be the name of your protocol.</p>
+</li>
+<li>
+<p>The reference part. This part represents the &quot;payload&quot; of the URL, namely what the URL refer to. Consider <code>file</code>, as an example. <code>file:</code>s reference is simply a path to a file. The reference can be any arbitrary byte string. The parsing, interpretation, and storage of the reference is left to the scheme. For this reason, it is not required to be a tree-like structure.</p>
+</li>
+</ol>
+<p>So, the string representation of an URL looks like:</p>
+<pre><code>[scheme]:[reference]
+</code></pre>
+<p>Note that <code>//</code> is not required, for convenience.</p>
+<h2>Opening an URL</h2>
+<p>URLs can be opened, yielding <em>schemes</em>, which can be read, written and (for some schemes) seeked (the are some more operations, these are described later on).I</p>
+<p>For compatibility reasons, we use a file API similar to the Rust standard libraries for opening URLs:</p>
+<pre><code>use std::fs::OpenOptions;
+use std::io::prelude::*;
+
+
+fn main() {
+    // Let's read from a TCP stream
+    let tcp = OpenOptions::new()
+                .read(true) // readable
+                .write(true) // writable
+                .open(&quot;tcp:0.0.0.0&quot;);
+}
+</code></pre>
+<blockquote>
+<p>TODO: Maybe do something with the tcp stream. Ping-pong?</p>
+</blockquote>
+<blockquote>
+<p>TODO: The terminology may be somewhat confusing for the reader.</p>
+</blockquote>
+<h1>How URLs works under the hood?</h1>
+<h2>The representation</h2>
+<p>Since it is impossible to go from userspace to ring 0 in a typed manner, we have to use some weakly typed representation (that is, we can't use an enum, unless we want to do transmutions and friends). Therefore, we use a string-like representation when moving to kernel space. This is basically just a raw pointer to a C-like, null-terminating string. To avoid further overhead, we use more efficient representations:</p>
+<h1><code>Url&lt;'a&gt;</code></h1>
+<p>The first of the three representations is the simplest one. It consists of an <code>struct</code> containing two fat pointers, representing the scheme and the reference respectively.</p>
+<h1><code>OwnedUrl</code></h1>
+<p>This is a <code>struct</code> containing two <code>String</code>s (that is, growable, heap-allocated UTF-8 string), being the scheme and the reference respectively.</p>
+<h1><code>CowUrl&lt;'a&gt;</code></h1>
+<p>This is a Copy-on-Write (CoW) URL, which, when mutated, gets cloned to heap. This way, you get efficient conditional allocation of the URL.</p>
+<p>Not much fanciness here.</p>
+<h2>Opening an URL</h2>
+<blockquote>
+<p>TODO</p>
+</blockquote>
+<h1>Schemes</h1>
+<p>Schemes are the natural counter-part to URLs. As described before, URLs are opened to schemes, which can then be communicated with, through scheme operations.</p>
+<p>Schemes are named so that the kernel is able to identify them. This name is used in the <code>scheme</code> part of the URL.</p>
+<p>Schemes are a generalization of file systems. It should be noted that schemes are not necessarily representing normal files; often they are &quot;virtual file&quot;, that is, an abstract unit with certain operations defined on it.</p>
+<p>Throughout the whole ecosystem of Redox, schemes are used as the main communication primitive, because they are a really powerful abstraction. Namely, we have one unified interface.</p>
+<p>Schemes can be defined both in userspace and in kernelspace, although, when possible, userspace is preferred.</p>
+<h2>Scheme operations</h2>
+<p>What makes a scheme a scheme? Scheme operations!</p>
+<p>A scheme is just a data structure with certain function defined on it:</p>
+<ol>
+<li>
+<p><code>open</code> - open the scheme. <code>open</code> is used for initially opening the communication with a scheme, it is an optional method, and will default to returning <code>ENOENT</code>.</p>
+</li>
+<li>
+<p><code>mkdir</code> - make a new sub-structure. Note that the name is a little misleading (and it might even be renamed in the future), since in many schemes <code>mkdir</code> won't make a <code>directory</code>, but instead perform some form of substructure creation.</p>
+</li>
+</ol>
+<p>Less important optional methods are:</p>
+<ol>
+<li>
+<p><code>unlink</code> - remove a link (that is a binding from one substructure to another).</p>
+</li>
+<li>
+<p><code>link</code> - add a link.</p>
+</li>
+</ol>
+<blockquote>
+<p>TODO</p>
+</blockquote>
+<h1>Resources</h1>
+<p>Resources are opened schemes. You can think of them like an established connection between the scheme provider and the client.</p>
+<p>Resources are closely connect to schemes, and are sometimes intertwined with schemes. But the different is subtle, yet crucial.</p>
+<h2>Resource operations</h2>
+<p>A resource can be defined as a data type with following methods defined on it:</p>
+<ol>
+<li><code>read</code> - read N bytes to a buffer provided as argument. Defaults to <code>EBADF</code></li>
+<li><code>write</code> - write a buffer to the resource. Defaults to <code>EBADF</code>.</li>
+<li><code>seek</code> - seek the resource, that is move the &quot;cursor&quot; without writing. Many resources do not support this operation. Defaults to <code>EBADF</code>.</li>
+<li><code>close</code> - close the resource, potentially releasing a lock. Defaults to <code>EBADF</code>.</li>
+</ol>
+<blockquote>
+<p>TODO add F-operations</p>
+</blockquote>
+<h2>The resource type</h2>
+<p>There are two types of resources:</p>
+<ol>
+<li>File-like resources. These behaves a lot like files. They act in a blocking manner, reads and writes are &quot;buffer-like&quot;.</li>
+<li>Socket-like resources. These behaves like sockets. They act in a non-blocking manner, reads and writes are more &quot;stream-like&quot;.</li>
+</ol>
+<p>I will expand on this later.</p>
+<blockquote>
+<p>TODO</p>
+</blockquote>
+<h1>File-like</h1>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+
+            </div>
+
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>
