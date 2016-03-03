@@ -72,8 +72,8 @@
 <h2>Syscalls</h2>
 <p>The syscall interface is very Unix-y. For example, we have <code>open</code>, <code>pipe</code>, <code>pipe2</code>, <code>lseek</code>, <code>read</code>, <code>write</code>, <code>brk</code>, <code>execv</code>, and so on. Currently, we support the 31 most common Linux syscalls.</p>
 <p>Compared to Linux, our syscall interface is much more minimal. This is not because of the stage in development. This is a matter of design. Linux has a lot unnecessary, bloated syscalls (try to run <code>man syscalls</code>, and an almost infinite list appears).</p>
-<h2>&quot;Everything is an URL&quot;</h2>
-<p>This is an generalization of &quot;Everything is an file&quot;, largely inspired by Plan 9. In Redox, &quot;resources&quot; (will be explained later) can be both socket-like and file-like, making them fast enough for using them for virtually everything.</p>
+<h2>&quot;Everything is a URL&quot;</h2>
+<p>This is an generalization of &quot;Everything is a file&quot;, largely inspired by Plan 9. In Redox, &quot;resources&quot; (will be explained later) can be both socket-like and file-like, making them fast enough for using them for virtually everything.</p>
 <p>This way we get a more unified system API.</p>
 <h2>The kernel</h2>
 <p>Redox's kernel is a microkernel. The architecture is largely inspired by L4 and Minix.</p>

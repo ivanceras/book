@@ -67,7 +67,7 @@
                 </div>
 
                 <div id="content" class="content">
-                    <h1>How URLs works under the hood?</h1>
+                    <h1>How do URLs work under the hood?</h1>
 <h2>The representation</h2>
 <p>Since it is impossible to go from userspace to ring 0 in a typed manner, we have to use some weakly typed representation (that is, we can't use an enum, unless we want to do transmutions and friends). Therefore, we use a string-like representation when moving to kernel space. This is basically just a raw pointer to a C-like, null-terminating string. To avoid further overhead, we use more efficient representations:</p>
 <h1><code>Url&lt;'a&gt;</code></h1>

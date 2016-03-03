@@ -75,13 +75,13 @@
 <p>Oh, you're not lazy? Well, then the next section is for you!</p>
 <h2>Installing the build dependencies manually</h2>
 <p>I assume you have a package manager, which you know how to use (if not, you have to install the build dependencies manually). We need the following deps: <code>make</code> (probably already installed), <code>nasm</code> (the assembler, we use in the build process), <code>qemu</code> (the hardware emulator, we will use. If you want to run Redox on real hardware, you should read the <code>fun</code> chapter):)</p>
-<pre><code>$ [you package manager] install make nasm qemu
+<pre><code>$ [your package manager] install make nasm qemu
 </code></pre>
-<p>While the following step is not <em>required</em>, it is recommended. If you already got a functioning Rust nightly installation, you can skip this step:</p>
+<p>While the following step is not <em>required</em>, it is recommended. If you already have a functioning Rust nightly installation, you can skip this step:</p>
 <p>We will use <code>multirust</code> to manage our Rust versions:</p>
 <pre><code>$ curl -sf https://raw.githubusercontent.com/brson/multirust/master/quick-install.sh | sh
 </code></pre>
-<p>Now, we have to configurate our multirust installation to default to <code>nightly</code>:</p>
+<p>Now, we have to configure our multirust installation to default to <code>nightly</code>:</p>
 <pre><code>$ multirust override nightly
 </code></pre>
 

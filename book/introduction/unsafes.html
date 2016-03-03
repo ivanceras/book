@@ -71,7 +71,7 @@
 <p><code>unsafe</code> is a way to tell Rust that &quot;I know what I'm doing!&quot;, which is necessary when writing extremely low-level code. You cannot write a kernel without <code>unsafe</code>s.</p>
 <p>In that light, a kernel cannot be 100% safe, however the unsafe parts have to be marked with an <code>unsafe</code>, which makes the unsafe parts segregated from the safe code. We seek to eliminate the <code>unsafe</code>s where we can, and when we use <code>unsafe</code>s, we are extremely careful.</p>
 <p>A quick grep gives us some stats: The kernel has 16.52% unsafe code, a 50% improvement in the last three weeks. Userspace has roughly ~0.2%.</p>
-<p>In contrary to Linux, which has a code base with 100% unsafe code, due to the nature of C.</p>
+<p>In constrast to Linux, which has a code base with 100% unsafe code, due to the nature of C.</p>
 <blockquote>
 <p>TODO: Expand</p>
 </blockquote>
